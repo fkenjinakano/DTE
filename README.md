@@ -21,7 +21,7 @@
 <br />
 <p align="center">
 
-  <h3 align="center">Deep tree ensembles for multi-output prediction</h3>
+  <h1 align="center">Deep tree ensembles for multi-output prediction</h1>
 </p>
 
 
