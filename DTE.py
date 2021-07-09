@@ -32,16 +32,20 @@ class DTE:
 			self.bestValue = np.argmax
 
 		self.models = []		
-		self.n_folds = 3
+		self.n_folds = 3 # number of folds used for inner cross-validation procedures
 
-		self.n_trees_rf = 150
+		self.n_trees_rf = 150 
 		self.n_trees_et = 150
+
+		self.n_trees_rf = 1
+		self.n_trees_et = 1
+
 		
 		self.pca_components = np.array([1, 0.01, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 0.95 ])
 
-		self.sample_size = 0.5
+		self.sample_size = 0.5 # sample size use to generate tree-embedding features
 
-		self.models_max_depth = 10
+		self.models_max_depth = 3 
 
 		self.features = features
 		self.prediction_features = prediction_features
@@ -77,8 +81,6 @@ class DTE:
 			new_train_x_et = extra_features_train_et
 			
 		for i in range(1, self.models_max_depth):
-			print (new_train_x_rf.shape)
-			print (new_train_x_et.shape)
 
 			self.models.append(self.add_layer(new_train_x_rf, new_train_x_et,  train_y))
 			train_predictions = self.predict_proba_layer(new_train_x_rf, new_train_x_et, i)
@@ -95,8 +97,6 @@ class DTE:
 				new_train_x_rf = extra_features_train_rf
 				new_train_x_et = extra_features_train_et
 			# print (new_train_x_et.shape)
-			print (train_performance)
-			print ("-------")
 		performance = np.array(train_performance)		
 	
 		self.performance = pd.DataFrame(performance)
@@ -104,7 +104,7 @@ class DTE:
 
 		self.output_nb_components = pd.DataFrame(self.optimal_nb_components, columns = ["RF_percentage","RF_components", "ET_percentage","ET_components"])
 		
-		self.optimal_layer = self.bestValue(train_performance) + 1
+		self.optimal_layer = self.bestValue(train_performance[1:]) + 1 
 	
 	def predict_proba_optimal_layer(self):
 		return self.test_predictions_probabilities[self.optimal_layer - 1]
@@ -297,11 +297,9 @@ class DTE:
 		else:	
 			new_test_x_rf = extra_features_test_rf
 			new_test_x_et = extra_features_test_et
-		FIX THIS
-		for i in range(1, self.models_max_depth):
+		for i in range(1, self.optimal_layer + 1):
 			test_predictions = self.predict_proba_layer(new_test_x_rf, new_test_x_et, i)
 			extra_features_test_rf, extra_features_test_et  = self.get_extra_features(new_test_x_rf, new_test_x_et, None, i, train=False)
-			
 			if self.features:
 				new_test_x_rf = pd.concat((test_x, extra_features_test_rf), ignore_index=True, axis=1)			
 				new_test_x_et = pd.concat((test_x, extra_features_test_et), ignore_index=True, axis=1)			
