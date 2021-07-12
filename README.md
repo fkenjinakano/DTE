@@ -111,7 +111,7 @@ Please, find below two practical examples of how to employ your method. In these
   output_space_features = False
   tree_embedding_features = True
   
-  df = DTE( task = "mtr", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
+  df = DTE(task = "mtr", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
   df.fit(train_x, train_y)
   predictions = df.predict(train_x)
  ```
@@ -124,7 +124,7 @@ Please, find below two practical examples of how to employ your method. In these
   output_space_features = False
   tree_embedding_features = True
   
-  df = DTE( task = "mlc", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
+  df = DTE(task = "mlc", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
   df.fit(train_x, train_y)
   predictions = df.predict(train_x)
 
