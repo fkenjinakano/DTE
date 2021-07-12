@@ -121,7 +121,7 @@ Please, find below two practical examples of how to employ your method. In these
 
 <h3> Multi-Label Classification</h3>
 
-```
+  ```
   from DTE import DTE
 
   features = True
@@ -133,7 +133,12 @@ Please, find below two practical examples of how to employ your method. In these
   predictions = df.predict(train_x)
 
    ```
-
-
+<h3> Model Attributes </h3>
+<ul>
+<li>train_prediction_probabilities: A list containing the output of each layer using the training dataset. </li>
+<li>output_nb_components: A list containing the tuples representing the optimal number of components and its corresponding percentage at each layer. The first position corresponds to the Random Forest, and the second for the Extra-trees. </li>
+<li>performance: A list containing the performance measured using the training set each layer.</li> 
+<li>optimal_layer = A integer that represents the layer selected as the optimal w.r.t to the stopping criterion (best performance in the training dataset). </li>
+</ul>
 
 
