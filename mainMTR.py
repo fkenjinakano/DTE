@@ -35,9 +35,9 @@ The outcomes of the model are accessed directly via its object. We list them bel
 	1 - train_prediction_probabilities: A list containing the output of each layer using the training dataset. 
 		- df.train_predictions_probabilities 
 	2 - output_nb_components: A list containing the tuples representing the optimal number of components and its corresponding percentage at each layer. 		
-	The first position correpsonds to the Random Forest, and the second for the Extra-trees. 
+	The first position corresponds to the Random Forest, and the second for the Extra-trees. 
 		- df.output_nb_components
-	3 - performance: A list containing the aRRMSE from both training and testing dataset obtained at each layer. 
+	3 - performance: A list containing the aRRMSE measured using the training set each layer
 		- df.performance
 	4 - optimal_layer = A integer that represents the layer selected as the optimal w.r.t to the stopping criterion (best performance in the training dataset). 
 		- df.optimal_layer
@@ -62,10 +62,7 @@ df.fit(train_x, train_y)
 predictions = df.predict(test_x)
 
 # print (df.optimal_layer)
-
-
 # print (df.performance)
 # print (df.train_predictions_probabilities)
 # print (df.output_nb_components)
-# print (df.optimal_layer)
 
