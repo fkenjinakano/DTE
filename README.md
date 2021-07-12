@@ -49,7 +49,7 @@
 ## About The Project
 
 
-This repository constains the implementation used in the manuscript "Deep tree ensembles for multi-output prediction, F.K. Nakano, K. Pliakos, C. Vens" to appear in Pattern Recognition 2021.
+This repository contains the implementation used in the manuscript "Deep tree ensembles for multi-output prediction, F.K. Nakano, K. Pliakos, C. Vens" to appear in Pattern Recognition 2021.
 
 
 Currently our implementation supports four types of variants:
@@ -60,7 +60,7 @@ Currently our implementation supports four types of variants:
    <li>TE: Only tree-embeddings </li>
    </ul> 
    
-As discussed in the paper, all optimization procedures relies on either optimizing the Average Relative Root Mean Square Error or the Micro-AUC. That includes the optimization of the number of components for the generating the tree-embedding features and the number of models associated to the output-features.
+As discussed in the paper, all optimization procedures relies on either optimizing the Average Relative Root Mean Square Error or the Micro-AUC depending on the task being addressed. That includes the optimization of the number of components for the generating the tree-embedding features and the number of models associated to the output-features.
 
 
 <!-- GETTING STARTED -->
@@ -107,6 +107,8 @@ Please, find below two practical examples of how to employ your method. In these
 <h3> Multi-Target Regression </h3>
 
 ```
+  from DTE import DTE
+  
   features = True
   output_space_features = False
   tree_embedding_features = True
@@ -120,6 +122,8 @@ Please, find below two practical examples of how to employ your method. In these
 <h3> Multi-Label Classification</h3>
 
 ```
+  from DTE import DTE
+
   features = True
   output_space_features = False
   tree_embedding_features = True
