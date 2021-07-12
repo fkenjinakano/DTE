@@ -49,27 +49,29 @@
 ## About The Project
 
 
-THIS REPOSITORY CONSTAINS THE IMPLEMENTATION USED IN LALALALALALA
-
-CURRENTLY IT SUPPORTS TWO TASKS
-
-CURRENTLY IT SUPPORTS THE VARIATIONS OF THE METHOD
+This repository constains the implementation used in the manuscript "Deep tree ensembles for multi-output prediction, F.K. Nakano, K. Pliakos, C. Vens" to appear in Pattern Recognition 2021.
 
 
-OPTIMIZATION FOR MTR RELIES ON ARRMSE FOR MLC ON MICRO-AUC
-
-
+Currently our implementation supports four types of variants:
+  <ul>
+   <li>X_TE: Original feature representation and tree-embeddings  </li>
+   <li>X_OS: Original features and prediction output space features </li>
+    <li>X_TE_OS: Original features, tree-embeddings and prediction features </li>
+   <li>TE: Only tree-embeddings </li>
+   </ul> 
+   
+As discussed in the paper, all optimization procedures relies on either optimizing the Average Relative Root Mean Square Error or the Micro-AUC. That includes the optimization of the number of components for the generating the tree-embedding features and the number of models associated to the output-features.
 
 
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+To run our project, simply place a local copy of our implementation into our project folder. 
 
 ### Prerequisites
 
-This is an example of how to list things you need to use the software and how to install them.
+We recommend the following libraries to best experience our implementation: 
+
   * numpy==1.19.0
   * pandas==1.0.5
   * scikit_learn==0.24.2
@@ -78,22 +80,54 @@ This is an example of how to list things you need to use the software and how to
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
 
-SHOW EXAMPLE WITH DIFFERENT KINDS OF FEATURES
+This project follows the same nomenclature as scikit-learn. That is, to run our method, one must simply instantiate the model and use the functions "fit" and "predict".
+
+It is also necessary to determine four parameters:
+<ul>
+  <li>task: String value that determines the task being addressd. It should either be "mtr" or "mlc" where "mlc" stands for multi-label classification and "mtr" for multi-target regression; </li>
+  <li>features: Boolean value that determines the use of the original representation (X); </li>
+  <li>prediction_features: Boolean value that determines the use of the output-space features;</li>
+  <li>path_features: Boolean value that determines the use of the tree-embedding features;</li>
+</ul>
+  
+  
+By combining the boolean parameters, the user may have access to all variants. 
+
+ <ul>
+   <li>X_TE: features = True, output_space_features = False, tree_embedding_features = True </li>
+   <li>X_OS: features = True, output_space_features = True, tree_embedding_features = False </li>
+   <li>X_TE_OS: features = True, output_space_features = True, tree_embedding_features = True </li>
+   <li>TE: features = False, output_space_features = False, tree_embedding_features = True </li>
+ </ul> 
+
+Please, find below two practical examples of how to employ your method. In these excerpts, assume that train_x and train_y are either pandas dataframes or numpy arrays containing the input features and their corresponding outputs, respectively.
 
 
 <h3> Multi-Target Regression </h3>
 
-```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
+```
+  features = True
+  output_space_features = False
+  tree_embedding_features = True
+  
+  df = DTE( task = "mtr", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
+  df.fit(train_x, train_y)
+  predictions = df.predict(train_x)
+ ```
 
 
 <h3> Multi-Label Classification</h3>
 
-```sh
-   git clone https://github.com/your_username_/Project-Name.git
+```
+  features = True
+  output_space_features = False
+  tree_embedding_features = True
+  
+  df = DTE( task = "mlc", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
+  df.fit(train_x, train_y)
+  predictions = df.predict(train_x)
+
    ```
 
 
