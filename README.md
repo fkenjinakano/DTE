@@ -81,11 +81,11 @@ We recommend the following libraries to best experience our implementation:
 ## Usage
 
 
-This project follows the same nomenclature as scikit-learn. That is, to run our method, one must simply instantiate the model and use the functions "fit" and "predict".
+This project follows the same nomenclature as scikit-learn. To run our method, one must simply instantiate the model and use the functions "fit" and "predict".
 
 It is also necessary to determine four parameters:
 <ul>
-  <li>task: String value that determines the task being addressd. It should either be "mtr" or "mlc" where "mlc" stands for multi-label classification and "mtr" for multi-target regression; </li>
+  <li>task: String value that determines the task being addressed. It should either be "mtr" or "mlc" where "mlc" stands for multi-label classification and "mtr" for multi-target regression; </li>
   <li>features: Boolean value that determines the use of the original representation (X); </li>
   <li>prediction_features: Boolean value that determines the use of the output-space features;</li>
   <li>path_features: Boolean value that determines the use of the tree-embedding features;</li>
