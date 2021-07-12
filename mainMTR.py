@@ -14,11 +14,11 @@ As described in the manuscript, our framework supports combinations of three fea
 
 Such combinations are arranged by initializing our model with boolean parameters, as such: 
 
-	- df = DeepForest(features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
+	- df = DTE(features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
 
 where features = X, output_space_features = OS and tree_embedding_features = TE
 
-All optimization steps, and their respective values, are defined in the DeepForest class itself and are optimized according to the aRRMSE.
+All optimization steps, and their respective values, are defined in the DTE class itself and are optimized according to the aRRMSE.
 
 For building the model, one must use the fit method, as such:
 	
@@ -59,6 +59,7 @@ test_y = test[[t for t in test.columns if "target"  in t]]
 	
 df = DTE(task = "mtr", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
 df.fit(train_x, train_y)
+
 predictions = df.predict(test_x)
 
 # print (df.optimal_layer)
