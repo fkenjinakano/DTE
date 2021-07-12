@@ -14,9 +14,9 @@ As described in the manuscript, our framework supports combinations of three fea
 
 Such combinations are arranged by initializing our model with boolean parameters, as such: 
 
-	- df = DeepForest(features = features, prediction_features = prediction_features, path_features = path_features)
+	- df = DeepForest(features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
 
-where features = X, prediction_features = OS and path_features = TE
+where features = X, output_space_features = OS and tree_embedding_features = TE
 
 All optimization steps, and their respective values, are defined in the DeepForest class itself and are optimized according to the aRRMSE.
 
@@ -41,16 +41,12 @@ The outcomes of the model are accessed directly via its object. We list them bel
 		- df.performance
 	4 - optimal_layer = A integer that represents the layer selected as the optimal w.r.t to the stopping criterion (best performance in the training dataset). 
 		- df.optimal_layer
-	5 - predict_proba_optimal_layer = A method that returns the predictions obtained in the optimal layer using the test dataset, a.k.a. test_prediction_probabilities[optimal_layer]
-	Useful for using our method as a comparison. 
-		- df.predict_proba_optimal_layer()
-
 """
 
 
 features = True
-prediction_features = False
-path_features = True
+output_space_features = False
+tree_embedding_features = True
 
 train = pd.read_csv("exampleDatasetMTR/train.csv")
 test = pd.read_csv("exampleDatasetMTR/test.csv")
@@ -61,9 +57,11 @@ train_y = train[[t for t in train.columns if "target"  in t]]
 test_x = test.drop([t for t in test.columns if "target"  in t],axis=1)
 test_y = test[[t for t in test.columns if "target"  in t]]
 	
-df = DTE(task = "mtr", features = features, prediction_features = prediction_features, path_features = path_features)
+df = DTE(task = "mtr", features = features, output_space_features = output_space_features, tree_embedding_features = tree_embedding_features)
 df.fit(train_x, train_y)
 predictions = df.predict(test_x)
+
+# print (df.optimal_layer)
 
 
 # print (df.performance)

@@ -11,12 +11,11 @@ class DTE:
 		
 	def __init__(self,
 		task,
-		percentage_removal = 0.95,
 		features = True,
-		prediction_features = False,
-		path_features = True,
+		output_space_features = False,
+		tree_embedding_features = True,
 		):
-		assert(prediction_features or path_features), "Either predictions or predictions should be true"
+		assert(output_space_features or tree_embedding_features), "Either predictions or predictions should be true"
 
 		self.task = task
 
@@ -37,36 +36,33 @@ class DTE:
 		self.n_trees_rf = 150 
 		self.n_trees_et = 150
 
-		self.n_trees_rf = 1
-		self.n_trees_et = 1
 
+		self.percentage_removal = 0.95
 		
 		self.pca_components = np.array([1, 0.01, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 0.95 ])
 
 		self.sample_size = 0.5 # sample size use to generate tree-embedding features
 
-		self.models_max_depth = 3 
+		self.models_max_depth = 10
 
 		self.features = features
-		self.prediction_features = prediction_features
-		self.path_features = path_features
-		self.percentage_removal = percentage_removal
+
+		self.output_space_features = output_space_features
+		self.tree_embedding_features = tree_embedding_features
 
 		self.train_predictions_probabilities = []
 		self.test_predictions_probabilities = []
 
 		self.optimal_nb_components = []
-		self.pcas_rf = [] # weights, nodes, PCA
-		self.pcas_et = [] # weights, nodes, PCA
+		self.pcas_rf = [] 
+		self.pcas_et = [] 
 	
 		self.model_pca_rf = []
 		self.model_pca_et = []
-				
 	def fit(self, train_x, train_y):
 		
 		train_performance = []		
 		self.mean_y = np.mean(train_y,axis=0).values
-			
 		self.models.append(self.add_layer(train_x, train_x, train_y))
 		train_predictions = self.predict_proba_layer(train_x, train_x, 0)
 
@@ -79,9 +75,7 @@ class DTE:
 		else:	
 			new_train_x_rf = extra_features_train_rf
 			new_train_x_et = extra_features_train_et
-			
 		for i in range(1, self.models_max_depth):
-
 			self.models.append(self.add_layer(new_train_x_rf, new_train_x_et,  train_y))
 			train_predictions = self.predict_proba_layer(new_train_x_rf, new_train_x_et, i)
 			train_performance.append(self.evaluate(train_predictions, train_y))
@@ -96,7 +90,6 @@ class DTE:
 			else:	
 				new_train_x_rf = extra_features_train_rf
 				new_train_x_et = extra_features_train_et
-			# print (new_train_x_et.shape)
 		performance = np.array(train_performance)		
 	
 		self.performance = pd.DataFrame(performance)
@@ -109,7 +102,6 @@ class DTE:
 	def predict_proba_optimal_layer(self):
 		return self.test_predictions_probabilities[self.optimal_layer - 1]
 	def add_layer(self, train_rf_x, train_et_x, train_y):
-		# simplefilter(action='ignore', category=FutureWarning)
 		rf = RandomForestRegressor(n_estimators=self.n_trees_rf, criterion = "mse", max_depth=None, min_samples_leaf=5, random_state=0, max_features = "sqrt", n_jobs=-1)
 		et = ExtraTreesRegressor(n_estimators=self.n_trees_et, criterion = "mse", max_depth=None, min_samples_leaf=5, random_state=0, max_features = "sqrt", n_jobs=-1)	
 		
@@ -120,13 +112,13 @@ class DTE:
 	def get_extra_features(self, x_rf, x_et, y, iteration, train):
 		extra_features_et = pd.DataFrame()
 		extra_features_rf = pd.DataFrame()
-		if self.prediction_features:
+		if self.output_space_features:
 			extra_features_predictions = self.predictions_features(x_rf, x_et, y, iteration, train)
 			extra_features_predictions.columns = ["pred_layer_" + str(iteration + 1) + "_target_" + str(i + 1) for i in range(extra_features_predictions.shape[1])]
 			extra_features_rf = pd.concat((extra_features_rf, extra_features_predictions), ignore_index=True, axis=1)
 			extra_features_et = pd.concat((extra_features_et, extra_features_predictions), ignore_index=True, axis=1)
 		
-		if self.path_features:
+		if self.tree_embedding_features:
 			extra_features_paths_rf, extra_features_paths_et = self.paths_features(x_rf, x_et, y, iteration, train)
 			extra_features_paths_rf.columns = ["path_layer_rf_" + str(iteration + 1) + "_path_" + str(i + 1) for i in range(extra_features_paths_rf.shape[1])]
 			extra_features_rf = pd.concat((extra_features_rf, extra_features_paths_rf), ignore_index=True, axis=1) 
