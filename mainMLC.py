@@ -62,7 +62,7 @@ df.fit(train_x, train_y)
 
 predictions = df.predict(train_x)
 
-# print (df.performance)
+print (df.performance)
 # print (df.train_predictions_probabilities)
 # print (df.output_nb_components)
 # print (df.optimal_layer)
